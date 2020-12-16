@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [person, setPerson] = useState([]);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setPerson(data))
+  },[])
+
+
   const products = [
     {name: 'HSC Higher Math CHapter-1 SHIKKHANGON BD Smart PDF', price: '$30', description: 'For HSC Student'},
     {name: 'HSC Higher Math CHapter-7 SHIKKHANGON BD Smart PDF', price: '$30', description: 'For HSC Student'},
@@ -9,10 +17,15 @@ function App() {
     {name: 'SSC Higher Math CHapter-10 SHIKKHANGON BD Smart PDF', price: '$30', description: 'For SSC Student'},
     {name: 'SSC Higher Math CHapter-4 SHIKKHANGON BD Smart PDF', price: '$30', description: 'For SSC Student'},
   ]
+
   const details = ['Sakib Khan', 'Manna', 'Dipjol', 'Bapparaz']
+  
   return (
     <div className="App">
       <header className="App-header">
+      {
+        person.map(psn => <Json id={psn.id} name={psn.name} username={psn.username} email={psn.email}></Json>)
+      }
         <Count></Count>
         {
           products.map(pd => <Product name = {pd.name} price={pd.price} description={pd.description}></Product>)
@@ -23,6 +36,26 @@ function App() {
         <Nayok name={details[1]}></Nayok>
         <Nayok name={details[2]}></Nayok>
       </header>
+    </div>
+  );
+}
+
+// Main App end here
+
+function Json(props) {
+  const jsonStyle = {
+    border: '2px solid red',
+    margin: '10px',
+    padding: '10px',
+    width: '400px',
+  }
+  return(
+    <div style={jsonStyle} >
+      <p>ID: {props.id}</p>
+      <h2>Name:  {props.name}</h2>
+      <h3>User Name:  {props.username}</h3>
+      <p>E-mail:  {props.email}</p>
+      <button>1</button>
     </div>
   );
 }
@@ -42,6 +75,8 @@ function Product(props){
     </div>
   );
 }
+
+
 function Count() {
   const [count, setCount] = useState(0);
   return(
@@ -60,6 +95,8 @@ function MovieCount(props) {
     </div>
   );
 }
+
+
 function Nayok(props) {
   console.log(props);
   var NayokStyle = {
